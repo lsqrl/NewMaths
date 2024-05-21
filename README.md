@@ -1,2 +1,2 @@
 # NewMaths
-Proposal of an IPC subnet for mathematical proofs, based on Lean theorem prover
+Proposal of a Filecoin smart contract suite for mathematical proofs, based on Lean theorem prover

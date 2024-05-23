@@ -1,0 +1,16 @@
+{
+  "name": "newmaths",
+  "version": "1.0.0",
+  "description": "Proposal of a Filecoin smart contract suite for mathematical proofs, based on Lean theorem prover",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@lighthouse-web3/sdk": "^0.3.3",
+    "dotenv": "^16.4.5"
+  }
+}

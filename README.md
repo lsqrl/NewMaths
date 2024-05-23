@@ -17,6 +17,11 @@ And also library for node:
 npm install -g --no-fund @lighthouse-web3/sdk
 ```
 
+To be able to run the file upload insert the following information in sakura.py:
+```
+os.environ["LIGTHOUSE_API_KEY"]=TODO
+```
+
 Run the sakura server:
 ```
 streamit run sakura.py

@@ -1,7 +1,5 @@
-def even (n : Nat) : Prop := ∃(m:Nat), m+m=n
+import Mathlib.Data.Real.Basic
 
-theorem plus11 : 1+1=2 := Eq.refl _
-
-theorem even2 : even 2 :=
-  have e : 1+1=2 := plus11
-  ⟨1,e⟩
+theorem myComm(a b c : ℝ) : a * b * c = b * (a * c) := by
+  rw [mul_comm a b]
+  rw [mul_assoc b a c]

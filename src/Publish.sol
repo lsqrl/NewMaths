@@ -57,6 +57,7 @@ contract Publish is ERC721, Ownable {
         require(!article.hasPoDSI, "article already activated");
         require(pubCost > 0, "publication cost not set");
         require(rewardToken.transferFrom(msg.sender, address(this), pubCost), "transfer failed");
+        delete publicationCost[tokenId];
         uint256 remainingToCite = article.citations.length;
         while (remainingToCite > 0) {
             require(articles[article.citations[remainingToCite - 1]].hasPoDSI, "citing not activated article");

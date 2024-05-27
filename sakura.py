@@ -59,14 +59,17 @@ uploaded_files = st.file_uploader("Choose a .lean file", accept_multiple_files=T
 for uploaded_file in uploaded_files:
     bytes_data = uploaded_file.read()
     file_size = sys.getsizeof(bytes_data)
+    file_name = uploaded_file.name
     st.write("Bytes: ", file_size)
     st.write("File name:", uploaded_file.name)
     st.write(bytes_data)
-    with open("my_file.lean", "wb") as f:
+    with open(os.path.join("Leanproject", file_name), "wb") as f:
         f.write(bytes_data)
-    result = subprocess.call(["lean", "--run", "my_file.lean"])
+    #result = subprocess.call(["lean", "--run", "my_file.lean"])
+    result = subprocess.call(["lake", "build"])
     if result:
         st.write("Review failed")
+        os.remove(os.path.join("Leanproject", file_name))
     else:
         st.write("Review succeeded")
         compiles = True
@@ -81,8 +84,12 @@ def publish_history():
     else:
         df.to_csv(path, mode='a', header=False)
     st.write(pd.read_csv(path))
+    st.write("Submitting to the chain")
+    #os.environ["LIGTHOUSE_API_KEY"]="TODO"
+    #result = subprocess.call(["node", "uploadFile.js", os.path.join("Leanproject", file_name)])
+    #st.write("Uploading ", os.path.join("Leanproject", file_name))
+    #st.write(result)
+    compiles = False
+    
 if compiles:
     st.button("Publish", on_click=publish_history)
-    st.write("Submitting to the chain")
-    #os.environ["LIGTHOUSE_API_KEY"]=TODO
-    #result = subprocess.call(["node", "uploadFile.js", "my_file.lean"])

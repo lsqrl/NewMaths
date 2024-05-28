@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Publish is ERC721, Ownable {
 
-    address public server;
     IERC20 public rewardToken;
     uint256 public id;
 
@@ -21,14 +20,10 @@ contract Publish is ERC721, Ownable {
     mapping(uint256 => uint256) public publicationCost;
     mapping(uint256 => ArticleData) public articles;
 
-    constructor(address _server, address _rewardToken) ERC721("Publish", "PUB") Ownable(msg.sender) {
-        server = _server;
+    constructor(address _rewardToken) ERC721("Publish", "PUB") Ownable(msg.sender) {
         rewardToken = IERC20(_rewardToken);
     }
 
-    function changeServer(address _server) public onlyOwner {
-        server = _server;
-    }
 
     function burn(uint256 tokenId) public onlyOwner {
         ArticleData memory article = articles[tokenId];

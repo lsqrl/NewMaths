@@ -3,11 +3,14 @@ const dotenv = require("dotenv");
 const minimist = require("minimist");
 
 dotenv.config();
-// ... other code
+
+const dealParam_default = {
+	"network":"calibration"
+}
 
 async function uploadFile(filePath) {
     const APIKey = process.env.LIGTHOUSE_API_KEY;
-    const uploadResponse = await lighthouse.upload(filePath, APIKey);
+    const uploadResponse = await lighthouse.upload(filePath, APIKey, false, dealParam_default);
 
     return uploadResponse;
 }

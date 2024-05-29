@@ -9,7 +9,7 @@ Make sure to have all of the following installed:
 - node.js
 - lean4 
 
-Keep in mind: *lean* comes with a command line tool called *lake* that enables custo theorem imports.
+Keep in mind: *lean* comes with a command line tool called *lake* that enables custom theorem imports.
 ## Installing the packages
 Installing the python dependencies:
 ```shell
@@ -20,9 +20,13 @@ Installing the node dependencies:
 ```shell
 npm install
 npm install -g --no-fund @lighthouse-web3/sdk
-npx hardhat compile
 ```
 # How to run
+## Compile the smart contract
+We are going to be using the hardhat 
+```shell
+npx hardhat compile
+```
 ## Enable lean theorem prover
 Before running the application run:
 ```shell

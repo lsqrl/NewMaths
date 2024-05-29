@@ -5,3 +5,4 @@ out
 node_modules
 artifacts
 .env
+.ipynb_checkpoints

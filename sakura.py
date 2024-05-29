@@ -85,11 +85,18 @@ def publish_history():
         df.to_csv(path, mode='a', header=False)
     st.write(pd.read_csv(path))
     st.write("Submitting to the chain")
-    #os.environ["LIGTHOUSE_API_KEY"]="TODO"
+    #os.environ["LIGTHOUSE_API_KEY"]=TODO
     #result = subprocess.call(["node", "uploadFile.js", os.path.join("Leanproject", file_name)])
     #st.write("Uploading ", os.path.join("Leanproject", file_name))
     #st.write(result)
     compiles = False
     
 if compiles:
+    # if the file compiles we would like to know what is the price for publishing it and also
+    # who to reward for the citations
+    
+    # we need to mint an NFT in order to retrieve the PoDSIs from the network
+    # so we will have the address of the authors and list of PoDSIs to award them
+    st.write("Esimated cost of publishing: ")
+    #st.
     st.button("Publish", on_click=publish_history)

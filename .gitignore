@@ -3,4 +3,5 @@ lib
 out
 /.lake
 node_modules
+artifacts
 .env

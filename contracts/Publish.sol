@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
@@ -9,6 +9,7 @@ contract Publish is ERC721, Ownable {
 
     IERC20 public rewardToken;
     uint256 public id;
+    uint256 public minimumPublicationCost;
 
     struct ArticleData {
         address author;
@@ -20,30 +21,22 @@ contract Publish is ERC721, Ownable {
     mapping(uint256 => uint256) public publicationCost;
     mapping(uint256 => ArticleData) public articles;
 
-    constructor(address _rewardToken) ERC721("Publish", "PUB") Ownable(msg.sender) {
+    constructor(address _rewardToken, uint256 _minimumPublicationCost) ERC721("Publish", "PUB") Ownable(msg.sender) {
         rewardToken = IERC20(_rewardToken);
-    }
-
-
-    function burn(uint256 tokenId) public onlyOwner {
-        ArticleData memory article = articles[tokenId];
-        delete articles[tokenId];
-        // transfer remaining rewards to author
-        require(rewardToken.transfer(article.author, article.availableRewards), "transfer failed");
-        _burn(tokenId);
+        minimumPublicationCost = _minimumPublicationCost;
     }
 
     // Once the server has verified the article, it can set the publication cost
     // This also includes having the PoDSI and checking that all citations are incldued
-    function setPublicationCost(uint256 tokenId, uint256 cost) public onlyOwner {
+    function setPublicationCost(address author, uint256 cost, uint256[] calldata citations) public onlyOwner {
         require(cost > 0, "cost must be greater than 0");
-        publicationCost[tokenId] = cost;
-    }
-
-    function publish(address author, uint256[] memory citations) public {
+        require(cost >= minimumPublicationCost, "cost must be greater than minimumPublicationCost");
+        
         id++;
         articles[id] = ArticleData(author, 0, citations, false);
         _mint(author, id);
+
+        publicationCost[id] = cost;
     }
 
     function activateArticle(uint256 tokenId) public {
@@ -52,6 +45,7 @@ contract Publish is ERC721, Ownable {
         require(!article.hasPoDSI, "article already activated");
         require(pubCost > 0, "publication cost not set");
         require(rewardToken.transferFrom(msg.sender, address(this), pubCost), "transfer failed");
+        pubCost -= minimumPublicationCost;
         delete publicationCost[tokenId];
         uint256 remainingToCite = article.citations.length;
         while (remainingToCite > 0) {
@@ -70,6 +64,4 @@ contract Publish is ERC721, Ownable {
         article.availableRewards = 0;
         require(rewardToken.transfer(article.author, article.availableRewards), "transfer failed");
     }
-
-
 }

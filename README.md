@@ -23,6 +23,16 @@ npm install -g --no-fund @lighthouse-web3/sdk
 npx hardhat compile
 ```
 # How to run
+## Enable lean theorem prover
+Before running the application run:
+```shell
+lake update
+lake build
+```
+If there are issues run:
+```shell
+lake clean
+```
 ## Running the rainbowkit server
 Rainbowkit will provide the wallet related functionalities
 ```shell

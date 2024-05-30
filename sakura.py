@@ -89,6 +89,9 @@ for uploaded_file in uploaded_files:
             f.writelines(all_but_last_line)
     else:
         st.write("Review succeeded")
+        # wallet_address = ""
+        # citations = "1 2 3"
+        #result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", citations])
         compiles = True
 
 def publish_history():
@@ -106,6 +109,8 @@ def publish_history():
     #result = subprocess.call(["node", "uploadFile.js", os.path.join("Leanproject", file_name)])
     #st.write("Uploading ", os.path.join("Leanproject", file_name))
     #st.write(result)
+    # article_id = 1
+    #result = subprocess.call(["node", os.path.join("scripts", "activateArticle.js"), "--articleId", str(article_id)])
     compiles = False
     
 if compiles:

@@ -105,5 +105,6 @@ if compiles:
 # URL of the rainbowkit deployment to embed
 website_url = "http://localhost:3000"  # Replace with the URL of the website you want to embed
 
-# Embed the website using an iframe
-st.components.v1.iframe(website_url, width=800, height=600)#, scrolling=True)
+with st.expander('Connect your wallet', expanded=True):
+    # Embed the website using an iframe
+    st.components.v1.iframe(website_url, width=800, height=600)#, scrolling=True)

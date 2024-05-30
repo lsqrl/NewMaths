@@ -19,6 +19,7 @@ pip install -r requirements.txt
 Installing the node dependencies:
 ```shell
 npm install
+npm install next
 npm install -g --no-fund @lighthouse-web3/sdk
 ```
 # How to run

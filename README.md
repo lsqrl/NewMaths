@@ -52,3 +52,9 @@ Execute the following command:
 ```shell
 streamit run sakura.py
 ```
+
+## Interacting with the smart contract
+We have three main scripts:
+- publish.js, which can be launched only by the owner of the contract (i.e. the server), with the syntax node publish.js --author [author] --citations [cit1] [cit2] [...]
+- activateArticle.js, which can be launched by anybody and triggers a pull payment by the Publish.sol contract, syntax node activateArticle.js --articleId [id]
+- getCitations.js, just a view function, syntax node getCitations.js --articleId [id]

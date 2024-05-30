@@ -49,6 +49,7 @@ compiles = False
 with st.sidebar:
     st.title('🌺 Sakura: automated reviewer & fair publisher')
     with st.expander('Powered by', expanded=True):
+        st.page_link("https://www.rainbowkit.com/", label="Rainbowkit - wallet connection", icon="🌈")
         st.page_link("https://lean-lang.org/about/", label="Lean programming language", icon="👩🏼‍💻")
         st.page_link("https://github.com/leanprover-community/mathematics_in_lean", label="Lean theorem dataset", icon="🧮")
         st.page_link("https://filecoin.io/", label="Filecoin", icon="🪙")

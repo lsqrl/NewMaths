@@ -26,6 +26,12 @@ contract Publish is ERC721, Ownable {
         citationFee = _citationFee;
     }
 
+    // Function to get the entire ArticleData struct
+    function getArticle(uint256 articleId) public view returns (address author, uint256[] memory citations, bool hasPoDSI) {
+        ArticleData memory article = articles[articleId];
+        return (article.author, article.citations, article.hasPoDSI);
+    }
+
     // Once the server has verified the article, it can set the publication cost
     // This also includes having the PoDSI and checking that all citations are incldued
     function prePublish(address author, uint256[] calldata citations) public onlyOwner {

@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 import plotly.express as px
+import random
 import subprocess
 import os
 import sys
@@ -20,7 +21,7 @@ st.set_page_config(
 alt.themes.enable("dark")
 
 path = 'history.csv'
-address = "0x"
+citations = []
 file_size = 0
 # run build lake at startup
 result = subprocess.call(["lake", "build"])
@@ -70,7 +71,6 @@ for uploaded_file in uploaded_files:
     file_size = sys.getsizeof(bytes_data)
     file_name = uploaded_file.name
     st.write("Reviewing: ", uploaded_file.name + "...")
-    #st.write(str(str(bytes_data).replace('\n', ' \n')))
     st.markdown("<div style=\"border: 2px solid #4CAF50; padding: 10px; border-radius: 5px;\"><p style=\"color:green;\">" + bytes_data.decode("utf-8").replace('\n', '<br>') + "</p></div>", unsafe_allow_html=True)
     with open(os.path.join("Leanproject", file_name), "wb") as f:
         f.write(bytes_data)
@@ -91,31 +91,31 @@ for uploaded_file in uploaded_files:
             f.writelines(all_but_last_line)
     else:
         st.markdown("<p style=\"color:green;\">🏆 Review succeeded</p>", unsafe_allow_html=True)
-        citations = "1 2 3"
-        #result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", citations])
-        st.write("I plan to execute:")
-        st.write(" ".join(["node", "os.path.join(\"scripts\", \"publish.js\")", "--author", wallet_address, "--citations", citations]))
+        st.write("Citations: ", str(bytes_data).count('Leanproject'))
+        citations = list(map(str, random.sample(range(400, 9000), str(bytes_data).count('Leanproject')))) # should have as many elements as there are Leanproject imports
+        result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", " ".join(citations)])
+        #st.write("I plan to execute:")
+        #st.write(" ".join(["node", "os.path.join(\"scripts\", \"publish.js\")", "--author", wallet_address, "--citations", citations]))
         compiles = True
 
 def publish_history():
     now = datetime.now()
     dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
     header = ["Timestamp", "WalletAddress", "FileSize [Byte]"]
-    df = pd.DataFrame(data = [(dt_string, address, file_size)], columns = header)
+    df = pd.DataFrame(data = [(dt_string, wallet_address, file_size)], columns = header)
     if not os.path.isfile(path):
         df.to_csv(path, columns = header)
     else:
         df.to_csv(path, mode='a', header=False)
     #st.write(pd.read_csv(path))
-    st.write("Submitting to the chain")
     #os.environ["LIGTHOUSE_API_KEY"]=TODO
     #result = subprocess.call(["node", "uploadFile.js", os.path.join("Leanproject", file_name)])
     #st.write("Uploading ", os.path.join("Leanproject", file_name))
     #st.write(result)
-    article_id = 1
-    #result = subprocess.call(["node", os.path.join("scripts", "activateArticle.js"), "--articleId", str(article_id)])
-    st.write("I plan to execute:")
-    st.write(" ".join(["node", "os.path.join(\"scripts\", \"activateArticle.js\")", "--articleId", "str(article_id)"]))
+    article_id = "1"
+    result = subprocess.call(["node", os.path.join("scripts", "activateArticle.js"), "--articleId", str(article_id)])
+    #st.write("I plan to execute:")
+    #st.write(" ".join(["node", "os.path.join(\"scripts\", \"activateArticle.js\")", "--articleId", "str(article_id)"]))
     compiles = False
     
 if compiles:
@@ -124,7 +124,8 @@ if compiles:
     
     # we need to mint an NFT in order to retrieve the PoDSIs from the network
     # so we will have the address of the authors and list of PoDSIs to award them
-    st.write("Esimated cost of publishing: ")
+    publishing_cost = 5 + 10*len(citations)
+    st.write("Esimated cost of publishing: " + str(publishing_cost) + "SKR")
     st.button("Publish", on_click=publish_history)
 
 

@@ -125,7 +125,7 @@ if compiles:
     # we need to mint an NFT in order to retrieve the PoDSIs from the network
     # so we will have the address of the authors and list of PoDSIs to award them
     publishing_cost = 5 + 10*len(citations)
-    st.write("Esimated cost of publishing: " + str(publishing_cost) + "SKR")
+    st.write("Esimated cost of publishing: " + str(publishing_cost) + " SKR")
     st.button("Publish", on_click=publish_history)
 
 

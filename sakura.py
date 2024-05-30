@@ -63,13 +63,15 @@ website_url = "http://localhost:3000"  # Replace with the URL of the website you
 with st.expander('Connect your wallet', expanded=True):
     # Embed the website using an iframe
     st.components.v1.iframe(website_url, width=800, height=500)#, scrolling=True)
+wallet_address = st.text_input("Copy-paste your wallet's address:")
 uploaded_files = st.file_uploader("Choose a .lean file", accept_multiple_files=True)
 for uploaded_file in uploaded_files:
     bytes_data = uploaded_file.read()
     file_size = sys.getsizeof(bytes_data)
     file_name = uploaded_file.name
-    st.write("File name:", uploaded_file.name)
-    st.write(str(str(bytes_data).replace('\n', ' \n')))
+    st.write("Reviewing: ", uploaded_file.name + "...")
+    #st.write(str(str(bytes_data).replace('\n', ' \n')))
+    st.markdown("<div style=\"border: 2px solid #4CAF50; padding: 10px; border-radius: 5px;\"><p style=\"color:green;\">" + bytes_data.decode("utf-8").replace('\n', '<br>') + "</p></div>", unsafe_allow_html=True)
     with open(os.path.join("Leanproject", file_name), "wb") as f:
         f.write(bytes_data)
     # add a new line for the new file
@@ -79,9 +81,8 @@ for uploaded_file in uploaded_files:
         file.write(str(last_line).partition(".")[0] + "." + file_name.partition(".")[0] + "\n")
     #result = subprocess.call(["lean", "--run", "my_file.lean"])
     result = subprocess.call(["lake", "build"])
-    st.write("Compile result: ", result)
     if result:
-        st.write("Review failed")
+        st.markdown("<p style=\"color:red;\">⛔ Review failed</p>", unsafe_allow_html=True)
         os.remove(os.path.join("Leanproject", file_name))
         # File was faulty so remove it from the list to not break future builds
         with open('Leanproject.lean', 'r') as f:
@@ -89,8 +90,7 @@ for uploaded_file in uploaded_files:
         with open('Leanproject.lean', 'w') as f:
             f.writelines(all_but_last_line)
     else:
-        st.write("Review succeeded")
-        wallet_address = "0xhello_world"
+        st.markdown("<p style=\"color:green;\">🏆 Review succeeded</p>", unsafe_allow_html=True)
         citations = "1 2 3"
         #result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", citations])
         st.write("I plan to execute:")

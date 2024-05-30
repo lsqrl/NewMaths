@@ -1,0 +1,1 @@
+def main : IUnit := IO.println "Hello, world!"

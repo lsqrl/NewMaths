@@ -41,9 +41,13 @@ lake clean
 ## Running the rainbowkit server
 Rainbowkit will provide the wallet related functionalities
 ```shell
-TODO
+cd rainbowkit-app
+npm install next
+npm run build
+npm run dev
 ```
 ## Running the sakura server
+Make sure that the URL of the rainbowkit server is correct:
 Execute the following command:
 ```shell
 streamit run sakura.py

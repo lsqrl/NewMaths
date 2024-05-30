@@ -71,11 +71,22 @@ for uploaded_file in uploaded_files:
     st.write(bytes_data)
     with open(os.path.join("Leanproject", file_name), "wb") as f:
         f.write(bytes_data)
+    # add a new line for the new file
+    with open('Leanproject.lean', 'r') as f:
+        last_line = f.readlines()[-1]
+    with open('Leanproject.lean', 'a') as file:
+        file.write(str(last_line).partition(".")[0] + "." + file_name.partition(".")[0])
     #result = subprocess.call(["lean", "--run", "my_file.lean"])
     result = subprocess.call(["lake", "build"])
+    st.write("Compile result: ", result)
     if result:
         st.write("Review failed")
         os.remove(os.path.join("Leanproject", file_name))
+        # File was faulty so remove it from the list to not break future builds
+        with open('Leanproject.lean', 'r') as f:
+            all_but_last_line = f.readlines()[:-1]
+        with open('Leanproject.lean', 'w') as f:
+            f.writelines(all_but_last_line)
     else:
         st.write("Review succeeded")
         compiles = True

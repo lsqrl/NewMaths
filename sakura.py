@@ -49,12 +49,18 @@ compiles = False
 with st.sidebar:
     st.title('🌺 Sakura: automated reviewer & fair publisher')
     with st.expander('Powered by', expanded=True):
+        st.page_link("https://www.rainbowkit.com/", label="Rainbowkit - wallet connection", icon="🌈")
         st.page_link("https://lean-lang.org/about/", label="Lean programming language", icon="👩🏼‍💻")
         st.page_link("https://github.com/leanprover-community/mathematics_in_lean", label="Lean theorem dataset", icon="🧮")
         st.page_link("https://filecoin.io/", label="Filecoin", icon="🪙")
         st.page_link("https://streamlit.io/", label="Streamlit framework", icon="🏗️")
 
-address = st.text_input("Please enter your wallet's address", value="")
+# URL of the rainbowkit deployment to embed
+website_url = "http://localhost:3000"  # Replace with the URL of the website you want to embed
+
+with st.expander('Connect your wallet', expanded=True):
+    # Embed the website using an iframe
+    st.components.v1.iframe(website_url, width=800, height=500)#, scrolling=True)
 uploaded_files = st.file_uploader("Choose a .lean file", accept_multiple_files=True)
 for uploaded_file in uploaded_files:
     bytes_data = uploaded_file.read()
@@ -100,3 +106,5 @@ if compiles:
     st.write("Esimated cost of publishing: ")
     #st.
     st.button("Publish", on_click=publish_history)
+
+

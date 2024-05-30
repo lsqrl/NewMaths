@@ -22,6 +22,8 @@ alt.themes.enable("dark")
 path = 'history.csv'
 address = "0x"
 file_size = 0
+# run build lake at startup
+result = subprocess.call(["lake", "build"])
         
 
 import base64
@@ -66,16 +68,15 @@ for uploaded_file in uploaded_files:
     bytes_data = uploaded_file.read()
     file_size = sys.getsizeof(bytes_data)
     file_name = uploaded_file.name
-    st.write("Bytes: ", file_size)
     st.write("File name:", uploaded_file.name)
-    st.write(bytes_data)
+    st.write(str(str(bytes_data).replace('\n', ' \n')))
     with open(os.path.join("Leanproject", file_name), "wb") as f:
         f.write(bytes_data)
     # add a new line for the new file
     with open('Leanproject.lean', 'r') as f:
         last_line = f.readlines()[-1]
     with open('Leanproject.lean', 'a') as file:
-        file.write(str(last_line).partition(".")[0] + "." + file_name.partition(".")[0])
+        file.write(str(last_line).partition(".")[0] + "." + file_name.partition(".")[0] + "\n")
     #result = subprocess.call(["lean", "--run", "my_file.lean"])
     result = subprocess.call(["lake", "build"])
     st.write("Compile result: ", result)
@@ -89,9 +90,11 @@ for uploaded_file in uploaded_files:
             f.writelines(all_but_last_line)
     else:
         st.write("Review succeeded")
-        # wallet_address = ""
-        # citations = "1 2 3"
+        wallet_address = "0xhello_world"
+        citations = "1 2 3"
         #result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", citations])
+        st.write("I plan to execute:")
+        st.write(" ".join(["node", "os.path.join(\"scripts\", \"publish.js\")", "--author", wallet_address, "--citations", citations]))
         compiles = True
 
 def publish_history():
@@ -103,14 +106,16 @@ def publish_history():
         df.to_csv(path, columns = header)
     else:
         df.to_csv(path, mode='a', header=False)
-    st.write(pd.read_csv(path))
+    #st.write(pd.read_csv(path))
     st.write("Submitting to the chain")
     #os.environ["LIGTHOUSE_API_KEY"]=TODO
     #result = subprocess.call(["node", "uploadFile.js", os.path.join("Leanproject", file_name)])
     #st.write("Uploading ", os.path.join("Leanproject", file_name))
     #st.write(result)
-    # article_id = 1
+    article_id = 1
     #result = subprocess.call(["node", os.path.join("scripts", "activateArticle.js"), "--articleId", str(article_id)])
+    st.write("I plan to execute:")
+    st.write(" ".join(["node", "os.path.join(\"scripts\", \"activateArticle.js\")", "--articleId", "str(article_id)"]))
     compiles = False
     
 if compiles:

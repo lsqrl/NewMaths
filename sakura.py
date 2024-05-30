@@ -125,7 +125,6 @@ if compiles:
     # we need to mint an NFT in order to retrieve the PoDSIs from the network
     # so we will have the address of the authors and list of PoDSIs to award them
     st.write("Esimated cost of publishing: ")
-    #st.
     st.button("Publish", on_click=publish_history)
 
 

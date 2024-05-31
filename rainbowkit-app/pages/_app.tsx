@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider } from 'wagmi';
 import {
   arbitrum,
+  arbitrumSepolia,
   base,
   mainnet,
   optimism,
@@ -22,8 +23,9 @@ const config = getDefaultConfig({
     polygon,
     optimism,
     arbitrum,
+    arbitrumSepolia,
     base,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true' ? [sepolia] : []),
+    ...([sepolia]),
   ],
   ssr: true,
 });

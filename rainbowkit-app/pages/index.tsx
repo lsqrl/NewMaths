@@ -1,9 +1,30 @@
+import * as React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
+import { useAccount, usePrepareTransactionRequest, useWriteContract } from 'wagmi';
+import { useState } from 'react';
+import ABI from '../../abi/publishAbi.json';
 
 const Home: NextPage = () => {
+  const { data: hash, writeContract } = useWriteContract()
+  const { isConnected } = useAccount();
+  const [id, setId] = useState<number>(0);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setId(parseInt(e.target.value));
+  }
+
+  async function submit() {
+    writeContract({
+      address: '0x5a57F6041038e2C6a5Bd7e96f4a48C1c0efa6A57',
+      abi: ABI,
+      functionName: 'activateArticle',
+      args: [BigInt(id)],
+    })
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -18,7 +39,19 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <ConnectButton />
 
- 
+        {isConnected && (
+          <div>
+            <h1>ID to activate:</h1>
+            <input 
+              type="number"
+              name="address"
+              value={id}
+              onChange={handleChange}
+              required>
+            </input>
+            <button onClick={submit}>Activate</button>
+          </div>
+        )}
       </main>
 
       <footer className={styles.footer}>

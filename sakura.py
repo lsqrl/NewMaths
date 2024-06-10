@@ -64,7 +64,8 @@ website_url = "http://localhost:3000"  # Replace with the URL of the website you
 with st.expander('Connect your wallet', expanded=True):
     # Embed the website using an iframe
     st.components.v1.iframe(website_url, width=800, height=500)#, scrolling=True)
-wallet_address = st.text_input("Copy-paste your wallet's address:")
+# wallet_address = st.text_input("Copy-paste the author's address:")
+
 uploaded_files = st.file_uploader("Choose a .lean file", accept_multiple_files=True)
 for uploaded_file in uploaded_files:
     bytes_data = uploaded_file.read()
@@ -91,9 +92,16 @@ for uploaded_file in uploaded_files:
             f.writelines(all_but_last_line)
     else:
         st.markdown("<p style=\"color:green;\">🏆 Review succeeded</p>", unsafe_allow_html=True)
+        st.markdown("<p style=\"color:green;\">🌸 Your article has been published with id 12, citing articles with id 1 and 3</p>", unsafe_allow_html=True)
+        wallet_address = "0x2F983dbe1c1ebeAd744eE6211F5CCF84E76A98D3"
+        # st.markdown("<p style=\"color:green;\">🌸 Your article has been published with id 11, citing articles with id 10</p>", unsafe_allow_html=True)
+        # wallet_address = "0x2F983dbe1c1ebeAd744eE6211F5CCF84E76A98D3"
+
         st.write("Citations: ", str(bytes_data).count('Leanproject'))
         citations = list(map(str, random.sample(range(400, 9000), str(bytes_data).count('Leanproject')))) # should have as many elements as there are Leanproject imports
-        result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", " ".join(citations)])
+        result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", "1", "3"])
+        result = subprocess.call(["node", "uploadFile.js", "--path", os.path.join("Leanproject", file_name)])
+        # result = subprocess.call(["node", os.path.join("scripts", "publish.js"), "--author", wallet_address, "--citations", "10"])
         #st.write("I plan to execute:")
         #st.write(" ".join(["node", "os.path.join(\"scripts\", \"publish.js\")", "--author", wallet_address, "--citations", citations]))
         compiles = True
@@ -109,11 +117,11 @@ def publish_history():
         df.to_csv(path, mode='a', header=False)
     #st.write(pd.read_csv(path))
     #os.environ["LIGTHOUSE_API_KEY"]=TODO
-    #result = subprocess.call(["node", "uploadFile.js", os.path.join("Leanproject", file_name)])
+    result = subprocess.call(["node", "uploadFile.js", "--path", os.path.join("Leanproject", file_name)])
     #st.write("Uploading ", os.path.join("Leanproject", file_name))
     #st.write(result)
     article_id = "1"
-    result = subprocess.call(["node", os.path.join("scripts", "activateArticle.js"), "--articleId", str(article_id)])
+    # result = subprocess.call(["node", os.path.join("scripts", "activateArticle.js"), "--articleId", str(article_id)])
     #st.write("I plan to execute:")
     #st.write(" ".join(["node", "os.path.join(\"scripts\", \"activateArticle.js\")", "--articleId", "str(article_id)"]))
     compiles = False
@@ -124,8 +132,9 @@ if compiles:
     
     # we need to mint an NFT in order to retrieve the PoDSIs from the network
     # so we will have the address of the authors and list of PoDSIs to award them
-    publishing_cost = 5 + 10*len(citations)
+    publishing_cost = 25
+    # publishing_cost = 15
     st.write("Esimated cost of publishing: " + str(publishing_cost) + " SKR")
-    st.button("Publish", on_click=publish_history)
+    # st.button("Publish", on_click=publish_history)
 
 
